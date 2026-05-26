@@ -1,231 +1,477 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listagem Estruturada de Contas</title>
-
+<title>Listagem Estruturada de Contas - Professor Moreira</title>
 <style>
-body{
-    margin:0;
-    padding:0;
-    font-family:Arial, sans-serif;
-    background:#2b0d46;
-    color:white;
-}
-
-.container{
-    width:100%;
-    max-width:480px;
-    margin:auto;
-    padding:20px;
-    box-sizing:border-box;
-}
-
-.screen{
-    display:none;
-    min-height:75vh;
-}
-
-.screen.active{
-    display:block;
-}
-
-.card{
-    background:white;
-    color:black;
-    border-radius:20px;
-    padding:20px;
-    margin-top:20px;
-    box-shadow:0 0 10px rgba(0,0,0,0.3);
-}
-
-h1,h2{
-    text-align:center;
-    color:#ffd700;
-}
-
-h3{
-    color:#4b0082;
-}
-
-ul{
-    padding-left:20px;
-}
-
-li{
-    margin-bottom:10px;
-    font-size:20px;
-    color:black;
-}
-
-.buttons{
-    display:flex;
-    justify-content:space-between;
-    margin-top:25px;
-    gap:10px;
-}
-
-button{
-    flex:1;
-    padding:15px;
-    font-size:20px;
-    border:none;
-    border-radius:15px;
-    background:#ffd700;
-    color:black;
-    font-weight:bold;
-}
-
-footer{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:#1a062b;
-    color:white;
-    text-align:center;
-    padding:10px;
-    font-size:16px;
-}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;min-height:100%;font-family:Arial, Helvetica, sans-serif;background:linear-gradient(160deg,#2b0d46,#4b1275,#6f22a8);color:#111;}
+  body{padding-bottom:112px;}
+  .app{width:100%;max-width:480px;margin:0 auto;padding:14px;}
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(43,13,70,.94);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:0 0 20px 20px;padding:10px 12px;margin:-14px -2px 12px;color:#fff;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .topbar .title{font-weight:900;font-size:18px;letter-spacing:.3px}
+  .counter{font-size:14px;margin-top:4px;color:#ffe889;font-weight:800}
+  .screen{display:none;animation:fade .22s ease-in-out;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .hero{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff;color:#111;border-radius:28px;padding:28px 20px;box-shadow:0 16px 35px rgba(0,0,0,.30);border:5px solid #ffd84d}
+  .hero h1{font-size:32px;line-height:1.12;margin:18px 0;color:#24102f}
+  .hero p{font-size:22px;line-height:1.35;font-weight:700}
+  .badge{background:#ffd84d;color:#111;border-radius:999px;padding:12px 14px;font-size:16px;font-weight:900;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+  .card{background:#fff;color:#111;border-radius:24px;padding:20px 18px;box-shadow:0 16px 35px rgba(0,0,0,.30);border:4px solid #ffd84d;min-height:68vh}
+  h1{font-size:31px;line-height:1.12;text-align:center;margin:6px 0 18px;color:#2b0d46}
+  h2{font-size:25px;line-height:1.18;margin:10px 0 15px;color:#4b0082;text-align:center;border-bottom:3px solid #ffd84d;padding-bottom:10px}
+  p{font-size:20px;line-height:1.38;font-weight:700;color:#111}
+  ul{margin:0;padding-left:0;list-style:none}
+  li{font-size:21px;line-height:1.28;margin:10px 0;padding:12px 12px 12px 42px;background:#f7f2ff;border:2px solid #e3d3ff;border-radius:16px;color:#111;font-weight:800;position:relative}
+  li::before{content:"✓";position:absolute;left:13px;top:10px;color:#4b0082;font-weight:900;font-size:22px}
+  .nav{position:fixed;left:0;right:0;bottom:46px;z-index:30;display:flex;gap:8px;justify-content:center;padding:10px 8px;background:rgba(26,6,43,.96);box-shadow:0 -8px 24px rgba(0,0,0,.3)}
+  button{border:0;border-radius:15px;padding:14px 10px;font-size:17px;font-weight:900;background:#ffd84d;color:#111;box-shadow:0 5px 0 #b98f00;min-width:0;flex:1;max-width:145px}
+  button:active{transform:translateY(3px);box-shadow:0 2px 0 #b98f00}
+  footer{position:fixed;left:0;right:0;bottom:0;z-index:31;background:#12031f;color:#fff;text-align:center;font-size:14px;font-weight:800;padding:9px 6px;border-top:2px solid #ffd84d}
+  @media (max-width:360px){
+    h1{font-size:27px}
+    h2{font-size:22px}
+    li{font-size:19px}
+    button{font-size:15px;padding:13px 7px}
+    .hero h1{font-size:28px}
+    .hero p{font-size:19px}
+  }
 </style>
 </head>
-
 <body>
-
-<div class="container">
-
-<div class="screen active">
-<h1>📘 LISTAGEM ESTRUTURADA DE CONTAS</h1>
-<h2>FGV - BACHAREL EM CIÊNCIAS CONTÁBEIS</h2>
-
-<div class="card">
-<h3>🟢 ATIVO CIRCULANTE</h3>
+<div class="app">
+  <div class="topbar">
+    <div class="title">📚 Contas Contábeis</div>
+    <div class="counter"><span id="current">1</span> / <span id="total"></span></div>
+  </div>
+  <section class="screen active">
+  <div class="hero">
+    <div class="badge">FGV • BACHAREL EM CIÊNCIAS CONTÁBEIS</div>
+    <h1>📘 LISTAGEM ESTRUTURADA DE CONTAS</h1>
+    <p>Todas as contas da listagem organizadas em telas para estudo no celular.</p>
+  </div>
+</section><section class="screen"><div class="card"><h1>📘 ATIVO</h1></div></section><section class="screen"><div class="card"><h1>🟢 ATIVO CIRCULANTE</h1>
+<h2>💵 Caixa e Equivalentes de Caixa</h2>
 <ul>
 <li>Caixa</li>
+<li>Fundo Fixo</li>
 <li>Bancos Conta Movimento</li>
-<li>Clientes</li>
-<li>Estoques</li>
-<li>Aplicações Financeiras</li>
-<li>Adiantamentos</li>
-<li>Despesas Antecipadas</li>
-</ul>
-</div>
-
-<div class="buttons">
-<button onclick="nextScreen()">➡ IR</button>
-</div>
-</div>
-
-<div class="screen">
-<div class="card">
-<h3>🔵 ATIVO NÃO CIRCULANTE</h3>
+<li>Aplicações de Liquidez Imediata</li>
+</ul></div></section><section class="screen"><div class="card"><h2>💰 Aplicações Financeiras</h2>
 <ul>
-<li>Realizável a Longo Prazo</li>
-<li>Investimentos</li>
-<li>Imobilizado</li>
-<li>Intangível</li>
-<li>Depreciação Acumulada</li>
-<li>Amortização Acumulada</li>
-</ul>
-</div>
-
-<div class="buttons">
-<button onclick="prevScreen()">⬅ VOLTAR</button>
-<button onclick="nextScreen()">➡ IR</button>
-</div>
-</div>
-
-<div class="screen">
-<div class="card">
-<h3>🔴 PASSIVO CIRCULANTE</h3>
+<li>Aplicações disponíveis para venda</li>
+<li>Aplicações mantidas até o vencimento</li>
+<li>Aplicações avaliadas ao valor justo por meio do resultado</li>
+<li>Aplicações avaliadas pelo custo</li>
+<li>(-) Perda estimada para redução ao valor recuperável</li>
+</ul></div></section><section class="screen"><div class="card"><h2>👥 Clientes</h2>
 <ul>
-<li>Fornecedores</li>
+<li>Duplicatas a Receber</li>
+<li>(-) Perdas Estimadas com Créditos de Liquidação Duvidosa</li>
+<li>(-) Juros a Apropriar</li>
+</ul></div></section><section class="screen"><div class="card"><h2>👨‍💼 Créditos com Empregados</h2>
+<ul>
+<li>Adiantamento de Salários</li>
+<li>Adiantamento de Férias</li>
+<li>Adiantamento de 13º Salário</li>
+<li>Adiantamento a Empregados</li>
+<li>Empréstimos a Empregados</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🤝 Créditos com Terceiros</h2>
+<ul>
+<li>Adiantamento a Terceiros</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏛 Créditos Fiscais e Tributários</h2>
+<ul>
+<li>ICMS a Recuperar</li>
+<li>IRRF a Recuperar</li>
+<li>PIS a Recuperar</li>
+<li>COFINS a Recuperar</li>
+<li>IRPJ a Recuperar</li>
+<li>CSLL a Recuperar</li>
+<li>IPI a Recuperar</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📦 Estoques</h2>
+<ul>
+<li>Mercadorias para Revenda</li>
+<li>Matéria-Prima</li>
+<li>Insumos</li>
+<li>Material de Embalagem</li>
+<li>Produtos em Elaboração</li>
+<li>Produtos Acabados</li>
+<li>Almoxarifado</li>
+<li>Estoque em Poder de Terceiros</li>
+<li>Adiantamento a Fornecedores</li>
+<li>Adiantamento de Importação</li>
+<li>(-) Ajuste a Valor Presente</li>
+<li>(-) Perdas Estimadas para Redução ao Valor Realizável Líquido</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🌱 Ativos Biológicos</h2>
+<ul>
+<li>Ativos Biológicos</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📑 Despesas Pagas Antecipadamente</h2>
+<ul>
+<li>Prêmios de Seguros</li>
+<li>Aluguel Pago Antecipadamente</li>
+<li>Assinaturas a Apropriar</li>
+<li>Anuidades a Apropriar</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏷 Ativo Não Circulante Mantido para Venda</h2>
+<ul>
+<li>Ativo Não Circulante Mantido para Venda</li>
+</ul></div></section><section class="screen"><div class="card"><h1>🔵 ATIVO NÃO CIRCULANTE</h1></div></section><section class="screen"><div class="card"><h1>📗 REALIZÁVEL A LONGO PRAZO</h1>
+<h2>👥 Contas a Receber LP</h2>
+<ul>
+<li>Duplicatas a Receber LP</li>
+<li>(-) Perdas Estimadas LP</li>
+<li>(-) Juros a Apropriar LP</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏛 Créditos Tributários e Tributos Diferidos</h2>
+<ul>
+<li>ICMS Diferido</li>
+<li>IRPJ Diferido</li>
+<li>CSLL Diferida</li>
+</ul></div></section><section class="screen"><div class="card"><h2>👨‍👩‍👧 Créditos com Partes Relacionadas</h2>
+<ul>
+<li>Créditos com Empresas Coligadas</li>
+<li>Créditos com Empresas Controladas</li>
+<li>Dividendos Propostos a Receber</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🌱 Ativos Biológicos LP</h2>
+<ul>
+<li>Ativos Biológicos LP</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📑 Despesas Antecipadas LP</h2>
+<ul>
+<li>Despesas Pagas Antecipadamente LP</li>
+</ul></div></section><section class="screen"><div class="card"><h1>📘 INVESTIMENTOS</h1>
+<h2>📈 Participações Societárias</h2>
+<ul>
+<li>Participações em Controladas</li>
+<li>Participações em Coligadas</li>
+<li>(-) Perdas Estimadas</li>
+<li>Mais-Valia</li>
+<li>Ágio</li>
+</ul></div></section><section class="screen"><div class="card"><h2>💹 Participações Avaliadas</h2>
+<ul>
+<li>Método do Custo</li>
+<li>Valor Justo</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏢 Propriedades para Investimento</h2>
+<ul>
+<li>Imóveis para Aluguel</li>
+<li>Arrendamento Operacional</li>
+<li>Imóveis para Valorização</li>
+<li>Imóveis para Definição Futura</li>
+</ul></div></section><section class="screen"><div class="card"><h1>🏭 IMOBILIZADO</h1>
+<h2>🏢 Bens em Operação</h2>
+<ul>
+<li>Terrenos</li>
+<li>Edificações</li>
+<li>Instalações</li>
+<li>Computadores</li>
+<li>Máquinas</li>
+<li>Móveis</li>
+<li>Veículos</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🚧 Imobilizado em Andamento</h2>
+<ul>
+<li>Obras em Andamento</li>
+<li>Instalações em Andamento</li>
+<li>Equipamentos em Andamento</li>
+<li>Adiantamentos a Fornecedores</li>
+</ul></div></section><section class="screen"><div class="card"><h2>➖ Contas Redutoras do Imobilizado</h2>
+<ul>
+<li>(-) Depreciação Acumulada</li>
+<li>(-) Exaustão Acumulada</li>
+<li>(-) Perdas Estimadas para Redução ao Valor Recuperável</li>
+</ul></div></section><section class="screen"><div class="card"><h1>💻 INTANGÍVEL</h1>
+<ul>
+<li>Patentes</li>
+<li>Direitos Autorais</li>
+<li>Software</li>
+<li>Intangível em Desenvolvimento</li>
+<li>(-) Amortização Acumulada</li>
+<li>(-) Perdas Estimadas para Redução ao Valor Recuperável</li>
+</ul></div></section><section class="screen"><div class="card"><h1>📕 PASSIVO</h1></div></section><section class="screen"><div class="card"><h1>🔴 PASSIVO CIRCULANTE</h1>
+<h2>🚚 Fornecedores</h2>
+<ul>
+<li>Fornecedores Nacionais</li>
+<li>Fornecedores Estrangeiros</li>
+</ul></div></section><section class="screen"><div class="card"><h2>👨‍💼 Salários e Encargos Sociais</h2>
+<ul>
 <li>Salários a Pagar</li>
+<li>Rescisões a Pagar</li>
+<li>Pró-Labore a Pagar</li>
+<li>Pensão Alimentícia a Pagar</li>
+<li>Férias a Pagar</li>
+<li>13º Salário a Pagar</li>
 <li>INSS a Recolher</li>
 <li>FGTS a Recolher</li>
-<li>Impostos a Recolher</li>
-<li>Empréstimos CP</li>
+<li>Contribuição Sindical</li>
+<li>Contribuição Assistencial</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏛 Obrigações Fiscais</h2>
+<ul>
+<li>ICMS a Recolher</li>
+<li>ICMS ST a Recolher</li>
+<li>COFINS a Recolher</li>
+<li>PIS a Recolher</li>
+<li>ISS a Recolher</li>
+<li>ISS Retido a Recolher</li>
+<li>IRRF a Recolher</li>
+<li>IPI a Recolher</li>
+<li>IRPJ a Recolher</li>
+<li>CSLL a Recolher</li>
+<li>Parcelamento de Tributos CP</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏦 Empréstimos e Financiamentos</h2>
+<ul>
+<li>Empréstimos Bancários CP</li>
+<li>Financiamentos CP</li>
+<li>Duplicatas Descontadas</li>
+<li>(-) Encargos Financeiros a Transcorrer</li>
+<li>(-) Custos de Transação a Apropriar</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📄 Debêntures</h2>
+<ul>
+<li>Debêntures CP</li>
+<li>Prêmio na Emissão de Debêntures</li>
+<li>(-) Encargos Financeiros a Transcorrer</li>
+<li>(-) Custos de Transação a Apropriar</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📞 Contas a Pagar</h2>
+<ul>
+<li>Água a Pagar</li>
+<li>Luz a Pagar</li>
+<li>Telefonia a Pagar</li>
+<li>Internet a Pagar</li>
+<li>Comissões a Pagar</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📦 Outras Obrigações</h2>
+<ul>
+<li>Adiantamento de Clientes</li>
+<li>Juros sobre Capital Próprio a Pagar</li>
 <li>Dividendos a Pagar</li>
-</ul>
-</div>
-
-<div class="buttons">
-<button onclick="prevScreen()">⬅ VOLTAR</button>
-<button onclick="nextScreen()">➡ IR</button>
-</div>
-</div>
-
-<div class="screen">
-<div class="card">
-<h3>🟣 PASSIVO NÃO CIRCULANTE</h3>
+</ul></div></section><section class="screen"><div class="card"><h2>⚖ Provisões</h2>
 <ul>
+<li>Provisões Fiscais</li>
+<li>Provisões Previdenciárias</li>
+<li>Provisões Trabalhistas</li>
+<li>Provisões Cíveis</li>
+<li>Provisões para Benefícios a Empregados</li>
+<li>Provisões para Garantias</li>
+<li>Provisões para Reestruturação</li>
+<li>Provisões para Retirada de Ativos</li>
+<li>Provisões para Programas de Fidelidade</li>
+<li>Provisões para Contratos Onerosos</li>
+<li>(-) Encargos a Apropriar</li>
+</ul></div></section><section class="screen"><div class="card"><h1>🟣 PASSIVO NÃO CIRCULANTE</h1>
+<h2>🏦 Empréstimos e Financiamentos LP</h2>
+<ul>
+<li>Empréstimos Bancários LP</li>
 <li>Financiamentos LP</li>
-<li>Debêntures LP</li>
-<li>Tributos Diferidos</li>
-<li>Provisões LP</li>
-</ul>
-</div>
-
-<div class="buttons">
-<button onclick="prevScreen()">⬅ VOLTAR</button>
-<button onclick="nextScreen()">➡ IR</button>
-</div>
-</div>
-
-<div class="screen">
-<div class="card">
-<h3>🟡 PATRIMÔNIO LÍQUIDO</h3>
+<li>Parcelamentos LP</li>
+<li>(-) Encargos Financeiros a Transcorrer</li>
+<li>(-) Custos de Transação a Apropriar</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📄 Debêntures LP</h2>
 <ul>
-<li>Capital Social</li>
-<li>Reservas de Capital</li>
-<li>Reservas de Lucro</li>
+<li>Debêntures LP</li>
+<li>Prêmio na Emissão de Debêntures</li>
+<li>(-) Encargos Financeiros a Transcorrer</li>
+<li>(-) Custos de Transação a Apropriar</li>
+</ul></div></section><section class="screen"><div class="card"><h2>⚖ Provisões LP</h2>
+<ul>
+<li>Provisões Trabalhistas LP</li>
+<li>Provisões Previdenciárias LP</li>
+<li>Provisões Fiscais LP</li>
+<li>Provisões Cíveis LP</li>
+<li>Provisões para Garantias LP</li>
+<li>Provisões para Reestruturação LP</li>
+<li>Provisões para Retirada de Ativos LP</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏛 Tributos Diferidos</h2>
+<ul>
+<li>IRPJ Diferido</li>
+<li>CSLL Diferida</li>
+</ul></div></section><section class="screen"><div class="card"><h1>🟡 PATRIMÔNIO LÍQUIDO</h1>
+<h2>💰 Capital Social</h2>
+<ul>
+<li>Capital Subscrito</li>
+<li>(-) Capital a Integralizar</li>
+</ul></div></section><section class="screen"><div class="card"><h2>💎 Reservas de Capital</h2>
+<ul>
+<li>Ágio na Emissão de Ações</li>
+<li>Reserva Especial para Ágio na Incorporação</li>
+<li>(-) Gastos na Emissão de Títulos Patrimoniais</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📈 Reservas de Lucro</h2>
+<ul>
+<li>Reserva Legal</li>
+<li>Reserva Estatutária</li>
+<li>Reserva para Contingências</li>
+<li>Reserva de Lucros a Realizar</li>
+<li>Reserva para Expansão</li>
+<li>Reserva de Incentivos Fiscais</li>
+<li>Reserva Especial para Dividendo Obrigatório Não Distribuído</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📉 Lucros ou Prejuízos Acumulados</h2>
+<ul>
 <li>Lucros Acumulados</li>
 <li>Prejuízos Acumulados</li>
-<li>Ações em Tesouraria</li>
+<li>Ajustes de Exercícios Anteriores</li>
+</ul></div></section><section class="screen"><div class="card"><h2>💵 Dividendos</h2>
+<ul>
+<li>Dividendo Adicional Proposto</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🧾 Ações em Tesouraria</h2>
+<ul>
+<li>(-) Ações de Emissão Própria em Tesouraria</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🌎 Outros Resultados Abrangentes</h2>
+<ul>
+<li>Ajustes de Avaliação Patrimonial</li>
+<li>(-) Tributos sobre Ajuste de Avaliação Patrimonial</li>
+<li>Ajustes Acumulados de Conversão</li>
+</ul></div></section><section class="screen"><div class="card"><h2>👥 Participação dos Não Controladores</h2>
+<ul>
+<li>Participação dos Não Controladores</li>
+</ul></div></section><section class="screen"><div class="card"><h1>📙 RESULTADO</h1>
+<h1>🟢 RECEITAS E DEDUÇÕES</h1>
+<h2>💰 Faturamento de Produtos</h2>
+<ul>
+<li>Faturamento Bruto de Produtos</li>
+<li>(-) IPI sobre Produtos</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🛒 Receita Bruta</h2>
+<ul>
+<li>Receita de Vendas</li>
+<li>Receita de Serviços</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏛 Tributos sobre Vendas</h2>
+<ul>
+<li>PIS sobre Faturamento</li>
+<li>COFINS sobre Faturamento</li>
+<li>ICMS sobre Vendas</li>
+<li>ISS sobre Serviços</li>
+</ul></div></section><section class="screen"><div class="card"><h2>↩ Ajustes da Receita</h2>
+<ul>
+<li>Abatimentos sobre Vendas</li>
+<li>Descontos Incondicionais</li>
+<li>Vendas Canceladas</li>
+<li>Devoluções Prováveis</li>
+<li>Provisão para Garantia</li>
+<li>Garantias Pós-Entrega</li>
+</ul></div></section><section class="screen"><div class="card"><h2>⏳ Ajuste a Valor Presente</h2>
+<ul>
+<li>Ajuste a Valor Presente</li>
+</ul></div></section><section class="screen"><div class="card"><h1>🟠 CUSTOS</h1>
+<ul>
+<li>CMV</li>
+<li>CSP</li>
+<li>CPV</li>
+<li>Custos das Devoluções Prováveis</li>
+</ul></div></section><section class="screen"><div class="card"><h1>🔴 DESPESAS OPERACIONAIS</h1>
+<h2>👨‍💼 Despesas com Pessoal</h2>
+<ul>
+<li>Salários</li>
+<li>Horas Extras</li>
+<li>Aviso Prévio</li>
+<li>Férias</li>
+<li>13º Salário</li>
+<li>INSS</li>
+<li>FGTS</li>
+<li>Assistência Médica</li>
+<li>Vale-Transporte</li>
+<li>Pró-Labore</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📢 Despesas Comerciais</h2>
+<ul>
+<li>Comissões sobre Vendas</li>
+<li>Material de Mostruário</li>
+<li>Material de Embalagem</li>
+<li>Propaganda</li>
+<li>Brindes</li>
+<li>Viagens</li>
+<li>Perdas Estimadas com Clientes</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏢 Ocupação</h2>
+<ul>
+<li>Aluguéis</li>
+<li>Condomínio</li>
+<li>Manutenção Predial</li>
+<li>Depreciação</li>
+<li>Amortização</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🔌 Utilidades e Serviços</h2>
+<ul>
+<li>Energia Elétrica</li>
+<li>Água e Esgoto</li>
+<li>Correios</li>
+<li>Internet</li>
+<li>Telefonia</li>
+<li>Vigilância</li>
+<li>Fretes</li>
+<li>Combustíveis</li>
+<li>Assinaturas</li>
+<li>Licença de Software</li>
+<li>Custas Processuais</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🧾 Despesas Tributárias</h2>
+<ul>
+<li>IPTU</li>
+<li>IOF</li>
+<li>Taxas</li>
+<li>Multas</li>
+<li>Outros Tributos</li>
+</ul></div></section><section class="screen"><div class="card"><h1>💲 RESULTADO FINANCEIRO</h1>
+<h2>📉 Despesas Financeiras</h2>
+<ul>
+<li>Variação Cambial</li>
+<li>Juros</li>
+<li>SELIC</li>
+<li>Multas Financeiras</li>
+</ul></div></section><section class="screen"><div class="card"><h2>🏦 Despesas Financeiras Gerais</h2>
+<ul>
+<li>Despesas Bancárias</li>
+<li>Taxa de Cartão</li>
+<li>Descontos Concedidos</li>
+</ul></div></section><section class="screen"><div class="card"><h2>📈 Receitas Financeiras</h2>
+<ul>
+<li>Receita de Aplicação Financeira</li>
+<li>Juros Recebidos</li>
+<li>SELIC Ativa</li>
+<li>Descontos Obtidos</li>
+</ul></div></section><section class="screen"><div class="card"><h1>🧮 TRIBUTOS SOBRE O LUCRO</h1>
+<ul>
+<li>IRPJ Corrente</li>
+<li>CSLL Corrente</li>
+<li>IRPJ Diferido</li>
+<li>CSLL Diferida</li>
+</ul></div></section><section class="screen"><div class="card"><h1>🔚 OPERAÇÕES DESCONTINUADAS</h1>
+<ul>
+<li>Receitas de Operações Descontinuadas</li>
+<li>Despesas de Operações Descontinuadas</li>
+<li>Tributos sobre Operações Descontinuadas</li>
 </ul>
+<p>Baseado integralmente na listagem enviada pelo usuário.</p></div></section>
 </div>
 
-<div class="buttons">
-<button onclick="prevScreen()">⬅ VOLTAR</button>
-<button onclick="restartScreens()">🔄 REINICIAR</button>
-</div>
-</div>
-
+<div class="nav">
+  <button onclick="prevScreen()">⬅ VOLTAR</button>
+  <button onclick="restartScreens()">🔄 REINICIAR</button>
+  <button onclick="nextScreen()">IR ➡</button>
 </div>
 
-<footer>
-Curso de Contabilidade Professor Moreira • WhatsApp (61) 98532-3574
-</footer>
+<footer>Curso de Contabilidade Professor Moreira • WhatsApp (61) 98532-3574</footer>
 
 <script>
 let current = 0;
-const screens = document.querySelectorAll('.screen');
+const screens = Array.from(document.querySelectorAll('.screen'));
+const currentEl = document.getElementById('current');
+const totalEl = document.getElementById('total');
+totalEl.textContent = screens.length;
 
 function showScreen(index){
-    screens.forEach((screen,i)=>{
-        screen.classList.toggle('active', i===index);
-    });
+  current = Math.max(0, Math.min(index, screens.length - 1));
+  screens.forEach((screen, i) => screen.classList.toggle('active', i === current));
+  currentEl.textContent = current + 1;
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function nextScreen(){
-    if(current < screens.length -1){
-        current++;
-        showScreen(current);
-    }
+  if(current < screens.length - 1) showScreen(current + 1);
 }
 
 function prevScreen(){
-    if(current >0){
-        current--;
-        showScreen(current);
-    }
+  if(current > 0) showScreen(current - 1);
 }
 
 function restartScreens(){
-    current = 0;
-    showScreen(current);
+  showScreen(0);
 }
-</script>
 
+document.addEventListener('keydown', function(e){
+  if(e.key === 'ArrowRight') nextScreen();
+  if(e.key === 'ArrowLeft') prevScreen();
+  if(e.key === 'Home') restartScreens();
+});
+</script>
 </body>
 </html>
