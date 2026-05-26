@@ -13,426 +13,405 @@
 body{
   margin:0;
   font-family:Arial, Helvetica, sans-serif;
-  background:linear-gradient(180deg,#f4e6ff,#d8b4f8);
-  color:#2d063f;
+  background:linear-gradient(180deg,#f3e5ff,#d8b4fe);
+  color:#2d0638;
+  overflow-x:hidden;
 }
 
-.slide{
-  display:none;
+.container{
+  width:100%;
+  max-width:430px;
+  margin:auto;
   min-height:100vh;
-  padding:35px 22px 110px;
-  text-align:center;
+  padding:18px 14px 90px;
 }
 
-.slide.active{
+.tela{
+  display:none;
+  background:#ffffff;
+  border:4px solid #9d4edd;
+  border-radius:25px;
+  padding:22px 18px;
+  min-height:72vh;
+  box-shadow:0 8px 20px rgba(80,0,120,.25);
+}
+
+.tela.ativa{
   display:block;
 }
 
 h1{
-  font-size:36px;
-  color:#4b006e;
-  margin-bottom:25px;
+  font-size:31px;
+  text-align:center;
+  color:#6a008a;
+  margin:10px 0 20px;
 }
 
 h2{
-  font-size:30px;
-  color:#6a008f;
-  background:white;
-  padding:15px;
-  border-radius:18px;
-  border:4px solid #9b4dca;
+  font-size:27px;
+  color:#7b1fa2;
+  text-align:center;
+  margin:10px 0 18px;
 }
 
 h3{
-  font-size:25px;
-  color:#4b006e;
+  font-size:24px;
+  color:#4a0072;
+  margin-top:20px;
 }
 
-.card{
-  background:white;
-  border:4px solid #b65cff;
-  border-radius:25px;
-  padding:22px;
-  margin:18px 0;
-  text-align:left;
-  font-size:24px;
+p, li{
+  font-size:22px;
   line-height:1.45;
-  box-shadow:0 6px 15px rgba(90,0,130,.25);
+  font-weight:700;
 }
 
 ul{
-  padding-left:28px;
+  padding-left:24px;
 }
 
-li{
-  margin:10px 0;
+.card{
+  background:#f5e6ff;
+  border:3px solid #b565d9;
+  border-radius:20px;
+  padding:15px;
+  margin:15px 0;
 }
 
 .destaque{
-  background:#f1d7ff;
-  border-left:10px solid #7b1fa2;
-  padding:15px;
-  border-radius:15px;
-  font-weight:bold;
+  background:#e9d5ff;
+  border-left:8px solid #7b2cbf;
+  padding:14px;
+  border-radius:16px;
+  font-size:23px;
+  font-weight:800;
+}
+
+.negativo{
+  color:#b00020;
+  font-weight:900;
 }
 
 .nav{
   position:fixed;
-  bottom:42px;
+  bottom:34px;
   left:0;
-  width:100%;
+  right:0;
+  max-width:430px;
+  margin:auto;
   display:flex;
-  justify-content:space-around;
-  align-items:center;
+  gap:8px;
+  justify-content:center;
   padding:8px;
+  background:#d8b4fe;
+  z-index:10;
 }
 
 button{
-  font-size:24px;
-  font-weight:bold;
+  font-size:20px;
+  font-weight:900;
   border:none;
   border-radius:18px;
-  padding:14px 18px;
-  background:#7b1fa2;
+  padding:13px 14px;
+  background:#7b2cbf;
   color:white;
-  box-shadow:0 4px 10px rgba(0,0,0,.25);
+  cursor:pointer;
 }
 
 button:active{
-  transform:scale(.95);
+  transform:scale(.96);
 }
 
 footer{
   position:fixed;
   bottom:0;
   left:0;
-  width:100%;
-  background:#4b006e;
+  right:0;
+  max-width:430px;
+  margin:auto;
+  background:#5a189a;
   color:white;
-  font-size:16px;
   text-align:center;
-  padding:10px 5px;
-  font-weight:bold;
+  font-size:14px;
+  font-weight:800;
+  padding:8px 4px;
+  z-index:11;
 }
 </style>
 </head>
 
 <body>
 
-<!-- TELA 1 -->
-<section class="slide active">
-  <h1>📚 NATUREZA DAS CONTAS</h1>
-  <div class="card">
-    <h2>Classificação da Natureza das Contas</h2>
-    <p class="destaque">As contas contábeis podem ter natureza devedora ou natureza credora.</p>
-    <p>Essa classificação ajuda a entender quando uma conta aumenta ou diminui na escrituração contábil.</p>
-  </div>
+<div class="container">
+
+<section class="tela ativa">
+<h1>📚 NATUREZA DAS CONTAS</h1>
+<div class="destaque">
+Classificação da Natureza das Contas
+</div>
+<p>Estudo das contas contábeis de acordo com sua natureza: devedora ou credora.</p>
 </section>
 
-<!-- TELA 2 -->
-<section class="slide">
-  <h1>🟢 CONTAS DE NATUREZA DEVEDORA</h1>
-  <div class="card">
-    <p class="destaque">Agrupa as contas que aumentam com o débito e diminuem com o crédito.</p>
-    <ul>
-      <li>✅ Ativo — Natureza Devedora</li>
-      <li>✅ Retificadora do Passivo — Natureza Devedora</li>
-      <li>✅ Retificadora do PL — Natureza Devedora</li>
-      <li>✅ Despesas — Natureza Devedora</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🟢 CONTAS DE NATUREZA DEVEDORA</h2>
+<div class="card">
+<p>Aumentam com o <strong>DÉBITO</strong> e diminuem com o <strong>CRÉDITO</strong>.</p>
+<ul>
+<li>Ativo</li>
+<li>Retificadora do Passivo</li>
+<li>Retificadora do Patrimônio Líquido</li>
+<li>Despesas</li>
+</ul>
+</div>
 </section>
 
-<!-- TELA 3 -->
-<section class="slide">
-  <h1>🔵 CONTAS DE NATUREZA CREDORA</h1>
-  <div class="card">
-    <p class="destaque">Agrupa as contas que aumentam com o crédito e diminuem com o débito.</p>
-    <ul>
-      <li>✅ Contas de Receitas — Natureza Credora</li>
-      <li>✅ Contas do Passivo — Natureza Credora</li>
-      <li>✅ Contas do PL — Natureza Credora</li>
-      <li>✅ Retificadora do Ativo — Natureza Credora</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🔵 CONTAS DE NATUREZA CREDORA</h2>
+<div class="card">
+<p>Aumentam com o <strong>CRÉDITO</strong> e diminuem com o <strong>DÉBITO</strong>.</p>
+<ul>
+<li>Receitas</li>
+<li>Passivo</li>
+<li>Patrimônio Líquido</li>
+<li>Retificadora do Ativo</li>
+</ul>
+</div>
 </section>
 
-<!-- TELA 4 -->
-<section class="slide">
-  <h1>🟢 ATIVO</h1>
-  <div class="card">
-    <h2>Ativo Circulante — AC</h2>
-    <h3>Disponibilidades</h3>
-    <ul>
-      <li>Caixa</li>
-      <li>Bancos Conta Movimento</li>
-      <li>Aplicações Financeiras</li>
-    </ul>
-    <h3>Clientes</h3>
-    <ul>
-      <li>Clientes</li>
-      <li>Duplicatas a Receber</li>
-      <li>(-) PECLD</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🟢 ATIVO CIRCULANTE</h2>
+<h3>Disponibilidades</h3>
+<ul>
+<li>Caixa</li>
+<li>Bancos Conta Movimento</li>
+<li>Aplicações Financeiras</li>
+</ul>
+<h3>Clientes</h3>
+<ul>
+<li>Clientes</li>
+<li>Duplicatas a Receber</li>
+<li class="negativo">(-) PECLD</li>
+</ul>
 </section>
 
-<!-- TELA 5 -->
-<section class="slide">
-  <h1>📦 ESTOQUES</h1>
-  <div class="card">
-    <ul>
-      <li>Mercadorias para Revenda</li>
-      <li>Produtos Acabados</li>
-      <li>Produtos em Elaboração</li>
-      <li>Matérias-primas</li>
-      <li>(-) Perda para Ajuste ao VRL</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>📦 ESTOQUES</h2>
+<ul>
+<li>Mercadorias para Revenda</li>
+<li>Produtos Acabados</li>
+<li>Produtos em Elaboração</li>
+<li>Matérias-primas</li>
+<li class="negativo">(-) Perda para Ajuste ao VRL</li>
+</ul>
 </section>
 
-<!-- TELA 6 -->
-<section class="slide">
-  <h1>💰 TRIBUTOS E ADIANTAMENTOS</h1>
-  <div class="card">
-    <h3>Tributos a Recuperar</h3>
-    <ul>
-      <li>ICMS a Recuperar</li>
-      <li>PIS/COFINS a Recuperar</li>
-      <li>IRRF a Recuperar</li>
-    </ul>
-
-    <h3>Adiantamentos</h3>
-    <ul>
-      <li>Adiantamento a Fornecedores</li>
-      <li>Adiantamento a Empregados</li>
-    </ul>
-
-    <h3>Despesas Antecipadas</h3>
-    <ul>
-      <li>Seguros a Vencer</li>
-      <li>Aluguéis a Vencer</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🧾 TRIBUTOS E ADIANTAMENTOS</h2>
+<h3>Tributos a Recuperar</h3>
+<ul>
+<li>ICMS a Recuperar</li>
+<li>PIS/COFINS a Recuperar</li>
+<li>IRRF a Recuperar</li>
+</ul>
+<h3>Adiantamentos</h3>
+<ul>
+<li>Adiantamento a Fornecedores</li>
+<li>Adiantamento a Empregados</li>
+</ul>
 </section>
 
-<!-- TELA 7 -->
-<section class="slide">
-  <h1>⏳ ATIVO NÃO CIRCULANTE</h1>
-  <div class="card">
-    <h2>Realizável a Longo Prazo — ARLP</h2>
-    <ul>
-      <li>Clientes LP</li>
-      <li>(-) PECLD LP</li>
-      <li>Estoques LP</li>
-      <li>(-) Perda Estoque LP</li>
-      <li>Empréstimos a Diretor</li>
-      <li>Empréstimos a Sócio</li>
-      <li>Empréstimos a Controladas</li>
-      <li>Empréstimos a Coligadas</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>📅 DESPESAS ANTECIPADAS</h2>
+<ul>
+<li>Seguros a Vencer</li>
+<li>Aluguéis a Vencer</li>
+</ul>
 </section>
 
-<!-- TELA 8 -->
-<section class="slide">
-  <h1>🏢 INVESTIMENTOS</h1>
-  <div class="card">
-    <ul>
-      <li>Participações em Controladas</li>
-      <li>Participações em Coligadas</li>
-      <li>Participações Permanentes</li>
-      <li>Propriedade para Investimento</li>
-      <li>Obras de Arte</li>
-      <li>Terrenos para Valorização</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🟢 ARLP</h2>
+<h3>Ativo Realizável a Longo Prazo</h3>
+<ul>
+<li>Clientes LP</li>
+<li class="negativo">(-) PECLD LP</li>
+<li>Estoques LP</li>
+<li class="negativo">(-) Perda Estoque LP</li>
+<li>Empréstimos a Diretor</li>
+<li>Empréstimos a Sócio</li>
+<li>Empréstimos a Controladas</li>
+<li>Empréstimos a Coligadas</li>
+</ul>
 </section>
 
-<!-- TELA 9 -->
-<section class="slide">
-  <h1>🏭 IMOBILIZADO</h1>
-  <div class="card">
-    <ul>
-      <li>Terrenos</li>
-      <li>Edificações</li>
-      <li>Máquinas e Equipamentos</li>
-      <li>Veículos</li>
-      <li>Móveis e Utensílios</li>
-      <li>Computadores</li>
-      <li>Instalações</li>
-      <li>Benfeitorias</li>
-      <li>➖ (-) Depreciação Acumulada</li>
-      <li>➖ (-) Impairment</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🏢 INVESTIMENTOS</h2>
+<ul>
+<li>Participações em Controladas</li>
+<li>Participações em Coligadas</li>
+<li>Participações Permanentes</li>
+<li>Propriedade para Investimento</li>
+<li>Obras de Arte</li>
+<li>Terrenos para Valorização</li>
+</ul>
 </section>
 
-<!-- TELA 10 -->
-<section class="slide">
-  <h1>💡 INTANGÍVEL</h1>
-  <div class="card">
-    <ul>
-      <li>Marcas</li>
-      <li>Patentes</li>
-      <li>Softwares</li>
-      <li>Goodwill</li>
-      <li>Direitos Autorais</li>
-      <li>Concessões</li>
-      <li>Franquias</li>
-      <li>Ativos de Desenvolvimento</li>
-      <li>➖ (-) Amortização Acumulada</li>
-      <li>➖ (-) Impairment</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🏭 IMOBILIZADO</h2>
+<ul>
+<li>Terrenos</li>
+<li>Edificações</li>
+<li>Máquinas e Equipamentos</li>
+<li>Veículos</li>
+<li>Móveis e Utensílios</li>
+<li>Computadores</li>
+<li>Instalações</li>
+<li>Benfeitorias</li>
+<li class="negativo">(-) Depreciação Acumulada</li>
+<li class="negativo">(-) Impairment</li>
+</ul>
 </section>
 
-<!-- TELA 11 -->
-<section class="slide">
-  <h1>🔵 PASSIVO CIRCULANTE — PC</h1>
-  <div class="card">
-    <ul>
-      <li>Fornecedores</li>
-      <li>Duplicatas a Pagar</li>
-      <li>Empréstimos CP</li>
-      <li>Duplicatas Descontadas</li>
-      <li>Salários a Pagar</li>
-      <li>INSS / FGTS a Recolher</li>
-      <li>Tributos a Recolher</li>
-      <li>Provisão para 13º</li>
-      <li>Provisão para Férias</li>
-      <li>Receita Antecipada</li>
-      <li>Provisão para Garantias</li>
-      <li>➖ (-) Encargos Financeiros a Apropriar</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>💡 INTANGÍVEL</h2>
+<ul>
+<li>Marcas</li>
+<li>Patentes</li>
+<li>Softwares</li>
+<li>Goodwill</li>
+<li>Direitos Autorais</li>
+<li>Concessões</li>
+<li>Franquias</li>
+<li>Ativos de Desenvolvimento</li>
+<li class="negativo">(-) Amortização Acumulada</li>
+<li class="negativo">(-) Impairment</li>
+</ul>
 </section>
 
-<!-- TELA 12 -->
-<section class="slide">
-  <h1>🔵 PASSIVO NÃO CIRCULANTE — PNC</h1>
-  <div class="card">
-    <ul>
-      <li>Empréstimos LP</li>
-      <li>Financiamentos LP</li>
-      <li>Debêntures</li>
-      <li>Parcelamentos Tributários LP</li>
-      <li>Provisão para Contingências LP</li>
-      <li>Passivo Fiscal Diferido</li>
-      <li>Receita Diferida LP</li>
-      <li>➖ (-) Encargos Financeiros a Apropriar</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🔵 PASSIVO CIRCULANTE</h2>
+<ul>
+<li>Fornecedores</li>
+<li>Duplicatas a Pagar</li>
+<li>Empréstimos CP</li>
+<li>Duplicatas Descontadas</li>
+<li>Salários a Pagar</li>
+<li>INSS / FGTS a Recolher</li>
+<li>Tributos a Recolher</li>
+<li>Provisão para 13º</li>
+<li>Provisão para Férias</li>
+<li>Receita Antecipada</li>
+<li>Provisão para Garantias</li>
+<li class="negativo">(-) Encargos Financeiros a Apropriar</li>
+</ul>
 </section>
 
-<!-- TELA 13 -->
-<section class="slide">
-  <h1>🟣 PATRIMÔNIO LÍQUIDO — CARRAP</h1>
-  <div class="card">
-    <ul>
-      <li>Capital Social</li>
-      <li>Reservas de Capital</li>
-      <li>Reservas de Lucros</li>
-      <li>Ajustes de Avaliação Patrimonial</li>
-      <li>Outros Resultados Abrangentes</li>
-      <li>➖ (-) Ações em Tesouraria</li>
-      <li>➖ (-) Capital a Integralizar</li>
-      <li>➖ (-) Prejuízos Acumulados</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🔵 PASSIVO NÃO CIRCULANTE</h2>
+<ul>
+<li>Empréstimos LP</li>
+<li>Financiamentos LP</li>
+<li>Debêntures</li>
+<li>Parcelamentos Tributários LP</li>
+<li>Provisão para Contingências LP</li>
+<li>Passivo Fiscal Diferido</li>
+<li>Receita Diferida LP</li>
+<li class="negativo">(-) Encargos Financeiros a Apropriar</li>
+</ul>
 </section>
 
-<!-- TELA 14 -->
-<section class="slide">
-  <h1>📈 RECEITAS</h1>
-  <div class="card">
-    <ul>
-      <li>Receita de Vendas</li>
-      <li>Receita de Serviços</li>
-      <li>Receita Financeira</li>
-      <li>Receita de Aluguéis</li>
-      <li>Ganho na Venda de Ativos</li>
-      <li>Reversão de Provisões</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>🟣 PATRIMÔNIO LÍQUIDO</h2>
+<h3>CARRAP</h3>
+<ul>
+<li>Capital Social</li>
+<li>Reservas de Capital</li>
+<li>Reservas de Lucros</li>
+<li>Ajustes de Avaliação Patrimonial</li>
+<li>Outros Resultados Abrangentes</li>
+<li class="negativo">(-) Ações em Tesouraria</li>
+<li class="negativo">(-) Capital a Integralizar</li>
+<li class="negativo">(-) Prejuízos Acumulados</li>
+</ul>
 </section>
 
-<!-- TELA 15 -->
-<section class="slide">
-  <h1>📉 DESPESAS</h1>
-  <div class="card">
-    <ul>
-      <li>CMV / CPV / CSP</li>
-      <li>Despesas Administrativas</li>
-      <li>Despesas Comerciais</li>
-      <li>Despesas Financeiras</li>
-      <li>PECLD — Despesa</li>
-      <li>Perda de Estoques</li>
-      <li>Impairment</li>
-      <li>IRPJ</li>
-      <li>CSLL</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>💰 RECEITAS</h2>
+<ul>
+<li>Receita de Vendas</li>
+<li>Receita de Serviços</li>
+<li>Receita Financeira</li>
+<li>Receita de Aluguéis</li>
+<li>Ganho na Venda de Ativos</li>
+<li>Reversão de Provisões</li>
+</ul>
 </section>
 
-<!-- TELA 16 -->
-<section class="slide">
-  <h1>✅ RESUMO FINAL</h1>
-  <div class="card">
-    <p class="destaque">Contas de natureza devedora:</p>
-    <ul>
-      <li>Ativo</li>
-      <li>Retificadora do Passivo</li>
-      <li>Retificadora do PL</li>
-      <li>Despesas</li>
-    </ul>
-
-    <p class="destaque">Contas de natureza credora:</p>
-    <ul>
-      <li>Receitas</li>
-      <li>Passivo</li>
-      <li>Patrimônio Líquido</li>
-      <li>Retificadora do Ativo</li>
-    </ul>
-  </div>
+<section class="tela">
+<h2>📉 DESPESAS</h2>
+<ul>
+<li>CMV / CPV / CSP</li>
+<li>Despesas Administrativas</li>
+<li>Despesas Comerciais</li>
+<li>Despesas Financeiras</li>
+<li>PECLD - Despesa</li>
+<li>Perda de Estoques</li>
+<li>Impairment</li>
+<li>IRPJ</li>
+<li>CSLL</li>
+</ul>
 </section>
+
+<section class="tela">
+<h1>✅ RESUMO FINAL</h1>
+<div class="card">
+<p>🟢 Natureza Devedora:</p>
+<p>Ativo, Despesas, Retificadora do Passivo e Retificadora do PL.</p>
+</div>
+<div class="card">
+<p>🔵 Natureza Credora:</p>
+<p>Passivo, Patrimônio Líquido, Receitas e Retificadora do Ativo.</p>
+</div>
+</section>
+
+</div>
 
 <div class="nav">
-  <button onclick="voltar()">⬅ Voltar</button>
-  <button onclick="recomecar()">🔄 Recomeçar</button>
-  <button onclick="avancar()">Avançar ➡</button>
+<button onclick="voltar()">⬅ Voltar</button>
+<button onclick="recomecar()">🔁 Recomeçar</button>
+<button onclick="avancar()">Avançar ➡</button>
 </div>
 
 <footer>
-Curso de Contabilidade Professor Moreira — WhatsApp: 61 98532-3574
+Curso de Contabilidade Professor Moreira • WhatsApp 61 98532-3574
 </footer>
 
 <script>
-let slideAtual = 0;
-const slides = document.querySelectorAll(".slide");
+let telaAtual = 0;
+const telas = document.querySelectorAll(".tela");
 
-function mostrarSlide(n){
-  slides.forEach(slide => slide.classList.remove("active"));
-  slides[n].classList.add("active");
+function mostrarTela(n){
+  telas.forEach(t => t.classList.remove("ativa"));
+  telas[n].classList.add("ativa");
+  window.scrollTo(0,0);
 }
 
 function avancar(){
-  if(slideAtual < slides.length - 1){
-    slideAtual++;
-    mostrarSlide(slideAtual);
+  if(telaAtual < telas.length - 1){
+    telaAtual++;
+    mostrarTela(telaAtual);
   }
 }
 
 function voltar(){
-  if(slideAtual > 0){
-    slideAtual--;
-    mostrarSlide(slideAtual);
+  if(telaAtual > 0){
+    telaAtual--;
+    mostrarTela(telaAtual);
   }
 }
 
 function recomecar(){
-  slideAtual = 0;
-  mostrarSlide(slideAtual);
+  telaAtual = 0;
+  mostrarTela(telaAtual);
 }
 </script>
 
