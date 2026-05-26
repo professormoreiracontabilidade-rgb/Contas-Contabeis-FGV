@@ -1,664 +1,231 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Listagem Estruturada de Contas - FGV</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listagem Estruturada de Contas</title>
+
 <style>
-  * {
-    box-sizing: border-box;
-  }
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(160deg, #2a063f 0%, #43105f 45%, #230236 100%);
-    color: #fff;
-    overflow-x: hidden;
-  }
-  body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  .app {
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-    min-height: 100vh;
-    padding: 14px 12px 112px;
-    position: relative;
-  }
-  .slide {
-    display: none;
-    min-height: calc(100vh - 130px);
-    animation: aparecer .25s ease-in-out;
-  }
-  .slide.ativa {
-    display: block;
-  }
-  @keyframes aparecer {
-    from { opacity: .3; transform: translateX(10px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  .capa {
-    text-align: center;
-    padding-top: 34px;
-  }
-  .marca {
-    display: inline-block;
-    background: #ffdd57;
-    color: #3b0755;
-    border-radius: 999px;
-    padding: 12px 22px;
-    font-weight: 900;
-    font-size: 42px;
-    letter-spacing: 2px;
-    box-shadow: 0 0 22px rgba(255,221,87,.45);
-    margin-bottom: 18px;
-  }
-  h1 {
-    margin: 16px 0;
-    font-size: 34px;
-    line-height: 1.12;
-    text-transform: uppercase;
-  }
-  .sub {
-    font-size: 23px;
-    line-height: 1.35;
-    background: rgba(255,255,255,.12);
-    border: 2px solid rgba(255,255,255,.22);
-    border-radius: 22px;
-    padding: 18px;
-    margin: 22px 0;
-  }
-  .aviso {
-    font-size: 19px;
-    line-height: 1.35;
-    background: rgba(255,221,87,.16);
-    border-left: 6px solid #ffdd57;
-    border-radius: 16px;
-    padding: 14px;
-    text-align: left;
-  }
-  .topo {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    background: linear-gradient(160deg, #2a063f 0%, #43105f 70%);
-    padding: 8px 0 10px;
-  }
-  .badge {
-    display: inline-block;
-    background: #ffdd57;
-    color: #3b0755;
-    border-radius: 999px;
-    padding: 7px 13px;
-    font-size: 15px;
-    font-weight: 900;
-  }
-  h2 {
-    font-size: 27px;
-    margin: 10px 0 8px;
-    line-height: 1.15;
-  }
-  .contas {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .contas li {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    background: rgba(255,255,255,.13);
-    border: 2px solid rgba(255,255,255,.22);
-    border-radius: 18px;
-    padding: 13px 12px;
-    margin: 10px 0;
-    font-weight: 800;
-    line-height: 1.18;
-    word-break: normal;
-    overflow-wrap: anywhere;
-  }
-  .ico {
-    flex: 0 0 auto;
-  }
-  .nivel1 {
-    font-size: 28px;
-    background: #ffdd57 !important;
-    color: #36084f;
-    text-transform: uppercase;
-  }
-  .nivel2 {
-    font-size: 25px;
-    background: rgba(255,255,255,.24) !important;
-    text-transform: uppercase;
-  }
-  .nivel3 {
-    font-size: 23px;
-  }
-  .nivel4 {
-    font-size: 21px;
-    margin-left: 8px !important;
-  }
-  .nivel5 {
-    font-size: 20px;
-    margin-left: 16px !important;
-    background: rgba(255,255,255,.10) !important;
-  }
-  .nav {
-    position: fixed;
-    left: 50%;
-    bottom: 44px;
-    transform: translateX(-50%);
-    width: min(480px, 100%);
-    padding: 8px 12px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    z-index: 20;
-  }
-  button {
-    border: none;
-    border-radius: 16px;
-    padding: 15px 6px;
-    font-size: 18px;
-    font-weight: 900;
-    background: #ffdd57;
-    color: #3b0755;
-    box-shadow: 0 4px 14px rgba(0,0,0,.25);
-  }
-  button:active {
-    transform: scale(.97);
-  }
-  .footer {
-    position: fixed;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    width: min(480px, 100%);
-    background: #210033;
-    color: #fff;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 800;
-    padding: 9px 10px 10px;
-    border-top: 2px solid rgba(255,255,255,.18);
-    z-index: 21;
-  }
-  .contador {
-    position: fixed;
-    right: calc(50% - min(240px, 50vw) + 12px);
-    top: 10px;
-    background: rgba(0,0,0,.35);
-    border-radius: 999px;
-    padding: 7px 10px;
-    font-weight: 900;
-    font-size: 14px;
-    z-index: 30;
-  }
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+    background:#2b0d46;
+    color:white;
+}
+
+.container{
+    width:100%;
+    max-width:480px;
+    margin:auto;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.screen{
+    display:none;
+    min-height:75vh;
+}
+
+.screen.active{
+    display:block;
+}
+
+.card{
+    background:white;
+    color:black;
+    border-radius:20px;
+    padding:20px;
+    margin-top:20px;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+h1,h2{
+    text-align:center;
+    color:#ffd700;
+}
+
+h3{
+    color:#4b0082;
+}
+
+ul{
+    padding-left:20px;
+}
+
+li{
+    margin-bottom:10px;
+    font-size:20px;
+    color:black;
+}
+
+.buttons{
+    display:flex;
+    justify-content:space-between;
+    margin-top:25px;
+    gap:10px;
+}
+
+button{
+    flex:1;
+    padding:15px;
+    font-size:20px;
+    border:none;
+    border-radius:15px;
+    background:#ffd700;
+    color:black;
+    font-weight:bold;
+}
+
+footer{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#1a062b;
+    color:white;
+    text-align:center;
+    padding:10px;
+    font-size:16px;
+}
 </style>
 </head>
+
 <body>
-  <main class="app">
-    <div class="contador" id="contador">1/40</div>
 
-    <section class="slide ativa capa">
-      <div class="marca">FGV</div>
-      <h1>LISTAGEM ESTRUTURADA DE CONTAS</h1>
-      <div class="sub">
-        🎓 Bacharel em Ciências Contábeis<br><br>
-        📱 Material para estudo<br>
-        ✅ Sem códigos das contas<br>
-        ✅ Listagem completa da FGV
-      </div>
-      <div class="aviso">
-        Use as setas abaixo para avançar, voltar ou recomeçar a revisão.
-      </div>
-    </section>
+<div class="container">
 
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 1 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel1"><span class="ico">🟣</span><span>ATIVO</span></li><li class="nivel2"><span class="ico">🟣</span><span>ATIVO CIRCULANTE</span></li><li class="nivel3"><span class="ico">📌</span><span>CAIXA E EQUIVALENTES DE CAIXA</span></li><li class="nivel4"><span class="ico">•</span><span>CAIXA E FUNDO FIXO</span></li><li class="nivel5"><span class="ico">•</span><span>CAIXA</span></li><li class="nivel5"><span class="ico">•</span><span>FUNDO FIXO</span></li><li class="nivel4"><span class="ico">•</span><span>BANCOS CONTA MOVIMENTO</span></li><li class="nivel5"><span class="ico">•</span><span>BANCO A</span></li><li class="nivel5"><span class="ico">•</span><span>BANCO B</span></li><li class="nivel4"><span class="ico">•</span><span>APLICAÇÕES FINANCEIRAS DE LIQUIDEZ IMEDIATA</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 2 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>BANCO A</span></li><li class="nivel5"><span class="ico">•</span><span>BANCO B</span></li><li class="nivel3"><span class="ico">📌</span><span>APLICAÇÕES FINANCEIRAS</span></li><li class="nivel4"><span class="ico">•</span><span>DISPONÍVEIS PARA VENDA</span></li><li class="nivel4"><span class="ico">•</span><span>MANTIDAS ATÉ O VENCIMENTO</span></li><li class="nivel4"><span class="ico">•</span><span>AVALIADAS AO VALOR JUSTO POR MEIO DO RESULTADO</span></li><li class="nivel4"><span class="ico">•</span><span>AVALIADAS PELO CUSTO</span></li><li class="nivel5"><span class="ico">•</span><span>APLICAÇÃO FINANCEIRA</span></li><li class="nivel5"><span class="ico">•</span><span>(-) PERDAS ESTIMADAS PARA REDUÇÃO AO VALOR RECUPERÁVEL</span></li><li class="nivel3"><span class="ico">📌</span><span>CONTAS A RECEBER E OUTROS CRÉDITOS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 3 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel4"><span class="ico">•</span><span>CLIENTES</span></li><li class="nivel5"><span class="ico">•</span><span>DUPLICATAS A RECEBER</span></li><li class="nivel5"><span class="ico">•</span><span>(-) PERDAS ESTIMADAS COM CRÉDITOS DE LIQUIDAÇÃO DUVIDOSA</span></li><li class="nivel5"><span class="ico">•</span><span>(-) JUROS A APROPRIAR</span></li><li class="nivel4"><span class="ico">•</span><span>CRÉDITOS COM EMPREGADOS</span></li><li class="nivel5"><span class="ico">•</span><span>ADIANTAMENTO A EMPREGADOS</span></li><li class="nivel5"><span class="ico">•</span><span>ADIANTAMENTO DE SALÁRIO</span></li><li class="nivel5"><span class="ico">•</span><span>ADIANTAMENTO DE FÉRIAS</span></li><li class="nivel5"><span class="ico">•</span><span>ADIANTAMENTO DE 13º SALÁRIO</span></li><li class="nivel5"><span class="ico">•</span><span>EMPRÉSTIMO A EMPREGADO</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 4 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel4"><span class="ico">•</span><span>CRÉDITOS COM TERCEIROS</span></li><li class="nivel5"><span class="ico">•</span><span>ADIANTAMENTO A TERCEIROS</span></li><li class="nivel4"><span class="ico">•</span><span>CRÉDITOS FISCAIS E TRIBUTÁRIOS</span></li><li class="nivel5"><span class="ico">•</span><span>ICMS A RECUPERAR</span></li><li class="nivel5"><span class="ico">•</span><span>IRRF A COMPENSAR</span></li><li class="nivel5"><span class="ico">•</span><span>PIS A RECUPERAR</span></li><li class="nivel5"><span class="ico">•</span><span>COFINS A RECUPERAR</span></li><li class="nivel5"><span class="ico">•</span><span>IRPJ A COMPENSAR</span></li><li class="nivel5"><span class="ico">•</span><span>CSLL A COMPENSAR</span></li><li class="nivel5"><span class="ico">•</span><span>IPI A RECUPERAR</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 5 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel3"><span class="ico">📌</span><span>ESTOQUES</span></li><li class="nivel4"><span class="ico">•</span><span>MERCADORIAS PARA REVENDA</span></li><li class="nivel4"><span class="ico">•</span><span>MATÉRIA-PRIMA</span></li><li class="nivel4"><span class="ico">•</span><span>INSUMOS</span></li><li class="nivel4"><span class="ico">•</span><span>MATERIAL DE EMBALAGEM</span></li><li class="nivel4"><span class="ico">•</span><span>PRODUTOS EM ELABORAÇÃO</span></li><li class="nivel4"><span class="ico">•</span><span>PRODUTOS ACABADOS</span></li><li class="nivel4"><span class="ico">•</span><span>ALMOXARIFADO</span></li><li class="nivel4"><span class="ico">•</span><span>ESTOQUE EM PODER DE TERCEIROS</span></li><li class="nivel4"><span class="ico">•</span><span>ADIANTAMENTOS A FORNECEDORES</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 6 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel4"><span class="ico">•</span><span>ADIANTAMENTO DE IMPORTAÇÃO</span></li><li class="nivel4"><span class="ico">•</span><span>(-) AJUSTE A VALOR PRESENTE</span></li><li class="nivel4"><span class="ico">•</span><span>(-) PERDAS ESTIMADAS PARA REDUÇÃO AO VALOR REALIZÁVEL LÍQUIDO</span></li><li class="nivel3"><span class="ico">📌</span><span>ATIVOS BIOLÓGICOS</span></li><li class="nivel3"><span class="ico">📌</span><span>DESPESAS PAGAS ANTECIPADAMENTE</span></li><li class="nivel4"><span class="ico">•</span><span>PRÊMIOS DE SEGUROS A APROPRIAR</span></li><li class="nivel4"><span class="ico">•</span><span>ALUGUEL PAGO ANTECIPADAMENTE</span></li><li class="nivel4"><span class="ico">•</span><span>ASSINATURAS E ANUIDADES A APROPRIAR</span></li><li class="nivel3"><span class="ico">📌</span><span>ATIVO NÃO CIRCULANTE MANTIDO PARA VENDA</span></li><li class="nivel2"><span class="ico">🟣</span><span>ATIVO NÃO CIRCULANTE</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 7 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel3"><span class="ico">📌</span><span>ATIVO REALIZÁVEL A LONGO PRAZO</span></li><li class="nivel4"><span class="ico">•</span><span>CONTAS A RECEBER</span></li><li class="nivel5"><span class="ico">•</span><span>DUPLICATAS A RECEBER</span></li><li class="nivel5"><span class="ico">•</span><span>(-) PERDAS ESTIMADAS COM CRÉDITOS DE LIQUIDAÇÃO DUVIDOSA</span></li><li class="nivel5"><span class="ico">•</span><span>(-) JUROS A APROPRIAR</span></li><li class="nivel4"><span class="ico">•</span><span>CRÉDITOS TRIBUTÁRIOS E TRIBUTOS DIFERIDOS</span></li><li class="nivel5"><span class="ico">•</span><span>ICMS DIFERIDO</span></li><li class="nivel5"><span class="ico">•</span><span>IRPJ DIFERIDO</span></li><li class="nivel5"><span class="ico">•</span><span>CSLL DIFERIDA</span></li><li class="nivel4"><span class="ico">•</span><span>CRÉDITOS COM PARTES RELACIONADAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 8 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>EMPRESA B</span></li><li class="nivel5"><span class="ico">•</span><span>EMPRESA C</span></li><li class="nivel5"><span class="ico">•</span><span>DIVIDENDOS PROPOSTOS A RECEBER</span></li><li class="nivel4"><span class="ico">•</span><span>ATIVOS BIOLÓGICOS</span></li><li class="nivel5"><span class="ico">•</span><span>ATIVOS BIOLÓGICOS</span></li><li class="nivel4"><span class="ico">•</span><span>DESPESAS PAGAS ANTECIPADAMENTE</span></li><li class="nivel5"><span class="ico">•</span><span>PRÊMIOS DE SEGUROS A APROPRIAR</span></li><li class="nivel5"><span class="ico">•</span><span>ALUGUEL PAGO ANTECIPADAMENTE</span></li><li class="nivel5"><span class="ico">•</span><span>ASSINATURAS E ANUIDADES A APROPRIAR</span></li><li class="nivel3"><span class="ico">📌</span><span>INVESTIMENTOS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 9 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel4"><span class="ico">•</span><span>PARTICIPAÇÕES AVALIADAS PELO MÉTODO DA EQUIVALÊNCIA PATRIMONIAL</span></li><li class="nivel5"><span class="ico">•</span><span>PARTICIPAÇÕES EM CONTROLADAS</span></li><li class="nivel5"><span class="ico">•</span><span>PARTICIPAÇÕES EM COLIGADAS</span></li><li class="nivel5"><span class="ico">•</span><span>(-) PERDAS ESTIMADAS PARA REDUÇÃO AO VALOR RECUPERÁVEL</span></li><li class="nivel5"><span class="ico">•</span><span>MAIS VALIA SOBRE ATIVOS LÍQUIDOS DAS INVESTIDAS</span></li><li class="nivel5"><span class="ico">•</span><span>ÁGIO POR EXPECTATIVA DE RENTABILIDADE FUTURA</span></li><li class="nivel4"><span class="ico">•</span><span>PARTICIPAÇÕES AVALIADAS PELO MÉTODO DO CUSTO</span></li><li class="nivel5"><span class="ico">•</span><span>OUTRAS PARTICIPAÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>(-) PERDAS ESTIMADAS PARA REDUÇÃO AO VALOR RECUPERÁVEL</span></li><li class="nivel4"><span class="ico">•</span><span>PARTICIPAÇÕES AVALIADAS PELO VALOR JUSTO</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 10 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel4"><span class="ico">•</span><span>PROPRIEDADES PARA INVESTIMENTO</span></li><li class="nivel5"><span class="ico">•</span><span>PROPRIEDADES PARA INVESTIMENTOS – ALUGUEL</span></li><li class="nivel5"><span class="ico">•</span><span>PROPRIEDADES MANTIDAS EM ARRENDAMENTO OPERACIONAL</span></li><li class="nivel5"><span class="ico">•</span><span>PROPRIEDADES MANTIDAS PARA VALORIZAÇÃO OU DEFINIÇÃO FUTURA</span></li><li class="nivel3"><span class="ico">📌</span><span>IMOBILIZADO</span></li><li class="nivel4"><span class="ico">•</span><span>BENS EM OPERAÇÃO</span></li><li class="nivel5"><span class="ico">•</span><span>TERRENOS</span></li><li class="nivel5"><span class="ico">•</span><span>EDIFICAÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>INSTALAÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>COMPUTADORES E PERIFÉRICOS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 11 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>MÁQUINAS E EQUIPAMENTOS</span></li><li class="nivel5"><span class="ico">•</span><span>MÓVEIS E UTENSÍLIOS</span></li><li class="nivel5"><span class="ico">•</span><span>VEÍCULOS</span></li><li class="nivel5"><span class="ico">•</span><span>(-) PERDAS ESTIMADAS PARA REDUÇÃO AO VALOR RECUPERÁVEL</span></li><li class="nivel4"><span class="ico">•</span><span>(-) DEPRECIAÇÃO ACUMULADA</span></li><li class="nivel5"><span class="ico">•</span><span>(-) EDIFICAÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>(-) INSTALAÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>(-) COMPUTADORES E PERIFÉRICOS</span></li><li class="nivel5"><span class="ico">•</span><span>(-) MÁQUINAS E EQUIPAMENTOS</span></li><li class="nivel5"><span class="ico">•</span><span>(-) MÓVEIS E UTENSÍLIOS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 12 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>(-) VEÍCULOS</span></li><li class="nivel4"><span class="ico">•</span><span>(-) EXAUSTÃO ACUMULADA</span></li><li class="nivel5"><span class="ico">•</span><span>(-) TERRENOS</span></li><li class="nivel4"><span class="ico">•</span><span>IMOBILIZADO EM ANDAMENTO</span></li><li class="nivel5"><span class="ico">•</span><span>EDIFICAÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>INSTALAÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>EQUIPAMENTOS</span></li><li class="nivel5"><span class="ico">•</span><span>ADIANTAMENTO A FORNECEDOR</span></li><li class="nivel5"><span class="ico">•</span><span>(-) PERDAS ESTIMADAS PARA REDUÇÃO AO VALOR RECUPERÁVEL</span></li><li class="nivel3"><span class="ico">📌</span><span>INTANGÍVEL</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 13 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>PATENTES</span></li><li class="nivel5"><span class="ico">•</span><span>DIREITOS AUTORAIS</span></li><li class="nivel5"><span class="ico">•</span><span>INTANGÍVEL EM DESENVOLVIMENTO</span></li><li class="nivel5"><span class="ico">•</span><span>SOFTWARE</span></li><li class="nivel5"><span class="ico">•</span><span>(-) AMORTIZAÇÃO ACUMULADA</span></li><li class="nivel5"><span class="ico">•</span><span>(-) PERDAS ESTIMADAS PARA REDUÇÃO AO VALOR RECUPERÁVEL</span></li><li class="nivel1"><span class="ico">🟣</span><span>PASSIVO</span></li><li class="nivel2"><span class="ico">🟣</span><span>PASSIVO CIRCULANTE</span></li><li class="nivel3"><span class="ico">📌</span><span>FORNECEDORES</span></li><li class="nivel5"><span class="ico">•</span><span>FORNECEDORES NACIONAIS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 14 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>FORNECEDORES ESTRANGEIROS</span></li><li class="nivel3"><span class="ico">📌</span><span>SALÁRIOS E ENCARGOS SOCIAIS</span></li><li class="nivel5"><span class="ico">•</span><span>SALÁRIOS A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>RESCISÕES A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>PRÓ-LABORE</span></li><li class="nivel5"><span class="ico">•</span><span>PENSÃO ALIMENTÍCIA</span></li><li class="nivel5"><span class="ico">•</span><span>FÉRIAS A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>13º SALARIOS A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>INSS A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>FGTS A RECOLHER</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 15 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>CONTRIBUIÇÃO SINDICAL A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>CONTRIBUIÇÃO ASSISTENCIAL A RECOLHER</span></li><li class="nivel3"><span class="ico">📌</span><span>OBRIGAÇÕES FISCAIS</span></li><li class="nivel5"><span class="ico">•</span><span>ICMS A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>ICMS SUBSTITUIÇÃO TRIBUTÁRIA</span></li><li class="nivel5"><span class="ico">•</span><span>COFINS A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>PIS A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>ISS A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>ISS RETIDO NA FONTE A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>IRRF A RECOLHER</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 16 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>IPI A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>IRPJ A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>CSLL A RECOLHER</span></li><li class="nivel5"><span class="ico">•</span><span>PARCELAMENTO DE TRIBUTOS</span></li><li class="nivel3"><span class="ico">📌</span><span>EMPRÉSTIMOS E FINANCIAMENTOS</span></li><li class="nivel4"><span class="ico">•</span><span>EMPRÉSTIMOS BANCÁRIOS</span></li><li class="nivel5"><span class="ico">•</span><span>EMPRÉSTIMOS A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>FINANCIAMENTOS A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>DUPLICATAS DESCONTADAS</span></li><li class="nivel5"><span class="ico">•</span><span>(-) ENCARGOS FINANCEIROS A TRANSCORRER</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 17 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>(-) CUSTOS DE TRANSAÇÃO A APROPRIAR</span></li><li class="nivel3"><span class="ico">📌</span><span>DEBÊNTURES</span></li><li class="nivel4"><span class="ico">•</span><span>DEBÊNTURES</span></li><li class="nivel4"><span class="ico">•</span><span>(-) ENCARGOS FINANCEIROS A TRANSCORRER</span></li><li class="nivel4"><span class="ico">•</span><span>(-) CUSTOS DE TRANSAÇÃO A APROPRIAR</span></li><li class="nivel3"><span class="ico">📌</span><span>CONTAS A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>ÁGUA E LUZ</span></li><li class="nivel5"><span class="ico">•</span><span>TELEFONIA E INTERNET</span></li><li class="nivel5"><span class="ico">•</span><span>COMISSÕES A PAGAR</span></li><li class="nivel3"><span class="ico">📌</span><span>OUTRAS OBRIGAÇÕES</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 18 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>ADIANTAMENTO DE CLIENTE</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS SOBRE O CAPITAL PRÓPRIO A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>DIVIDENDOS A PAGAR</span></li><li class="nivel3"><span class="ico">📌</span><span>PROVISÕES</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES FISCAIS, PREVIDENCIÁRIAS, TRABALHISTAS E CÍVEIS</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA BENEFÍCIOS A EMPREGADOS (APOSENTADORIAS E PENSÕES)</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA GARANTIAS</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA REESTRUTURAÇÃO</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA RETIRADA DE ATIVOS</span></li><li class="nivel5"><span class="ico">•</span><span>PROGRAMAS DE FIDELIDADE</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 19 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA CONTRATOS ONEROSOS</span></li><li class="nivel5"><span class="ico">•</span><span>(-) ENCARGOS A APROPRIAR</span></li><li class="nivel2"><span class="ico">🟣</span><span>PASSIVO NÃO CIRCULANTE</span></li><li class="nivel3"><span class="ico">📌</span><span>EMPRÉSTIMOS E FINANCIAMENTOS</span></li><li class="nivel5"><span class="ico">•</span><span>EMPRÉSTIMOS A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>FINANCIAMENTOS A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>DUPLICATAS DESCONTADAS</span></li><li class="nivel5"><span class="ico">•</span><span>(-) ENCARGOS FINANCEIROS A TRANSCORRER</span></li><li class="nivel3"><span class="ico">📌</span><span>DEBÊNTURES</span></li><li class="nivel5"><span class="ico">•</span><span>DEBÊNTURES</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 20 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>PRÊMIO NA EMISSÃO DE DEBÊNTURES A APROPRIAR</span></li><li class="nivel5"><span class="ico">•</span><span>(-) ENCARGOS FINANCEIROS A TRANSCORRER</span></li><li class="nivel5"><span class="ico">•</span><span>(-) CUSTOS DE TRANSAÇÃO A APROPRIAR</span></li><li class="nivel3"><span class="ico">📌</span><span>TRIBUTOS DIFERIDOS</span></li><li class="nivel5"><span class="ico">•</span><span>IRPJ DIFERIDO</span></li><li class="nivel5"><span class="ico">•</span><span>CSLL DIFERIDA</span></li><li class="nivel3"><span class="ico">📌</span><span>PROVISÕES</span></li><li class="nivel2"><span class="ico">🟣</span><span>PATRIMÔNIO LÍQUIDO</span></li><li class="nivel3"><span class="ico">📌</span><span>CAPITAL SOCIAL</span></li><li class="nivel5"><span class="ico">•</span><span>CAPITAL SUBSCRITO</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 21 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>(-) CAPITAL A INTEGRALIZAR</span></li><li class="nivel3"><span class="ico">📌</span><span>RESERVAS</span></li><li class="nivel4"><span class="ico">•</span><span>RESERVAS DE CAPITAL</span></li><li class="nivel5"><span class="ico">•</span><span>ÁGIO NA EMISSÃO DE AÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>RESERVA ESPECIAL PARA ÁGIO NA INCORPORAÇÃO</span></li><li class="nivel5"><span class="ico">•</span><span>(-) GASTOS NA EMISSÃO DE TÍTULOS PATRIMONIAIS</span></li><li class="nivel4"><span class="ico">•</span><span>RESERVAS DE LUCRO</span></li><li class="nivel5"><span class="ico">•</span><span>RESERVA LEGAL</span></li><li class="nivel5"><span class="ico">•</span><span>RESERVA ESTATUTÁRIA</span></li><li class="nivel5"><span class="ico">•</span><span>RESERVAS PARA CONTINGÊNCIAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 22 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>RESERVAS DE LUCROS A REALIZAR</span></li><li class="nivel5"><span class="ico">•</span><span>RESERVAS DE LUCROS PARA EXPANSÃO</span></li><li class="nivel5"><span class="ico">•</span><span>RESERVAS DE INCENTIVOS FISCAIS</span></li><li class="nivel5"><span class="ico">•</span><span>RESERVA ESPECIAL PARA DIVIDENDO OBRIGATÓRIO NÃO DISTRIBUÍDO</span></li><li class="nivel3"><span class="ico">📌</span><span>LUCROS/PREJUÍZOS ACUMULADOS</span></li><li class="nivel5"><span class="ico">•</span><span>PREJUÍZOS ACUMULADOS</span></li><li class="nivel5"><span class="ico">•</span><span>LUCROS ACUMULADOS</span></li><li class="nivel5"><span class="ico">•</span><span>AJUSTES DE EXERCÍCIOS ANTERIORES</span></li><li class="nivel3"><span class="ico">📌</span><span>DIVIDENDO ADICIONAL PROPOSTO</span></li><li class="nivel5"><span class="ico">•</span><span>DIVIDENDOS ADICIONAL PROPOSTO</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 23 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel3"><span class="ico">📌</span><span>(-) AÇÕES DE EMISSÃO PRÓPRIA EM TESOURARIA</span></li><li class="nivel3"><span class="ico">📌</span><span>OUTROS RESULTADOS ABRANGENTES</span></li><li class="nivel5"><span class="ico">•</span><span>AJUSTES DE AVALIAÇÃO PATRIMONIAL</span></li><li class="nivel5"><span class="ico">•</span><span>(-) TRIBUTOS SOBRE AJUSTE DE AVALIAÇÃO PATRIMONIAL</span></li><li class="nivel5"><span class="ico">•</span><span>AJUSTES ACUMULADOS DE CONVERSÃO</span></li><li class="nivel3"><span class="ico">📌</span><span>PARTICIPAÇÃO DOS NÃO CONTROLADORES</span></li><li class="nivel1"><span class="ico">🟣</span><span>RESULTADO</span></li><li class="nivel3"><span class="ico">📌</span><span>FATURAMENTO DE VENDAS DE PRODUTOS</span></li><li class="nivel5"><span class="ico">•</span><span>FATURAMENTO BRUTO DE VENDAS DE PRODUTOS</span></li><li class="nivel5"><span class="ico">•</span><span>(-) IMPOSTO SOBRE PRODUTOS INDUSTRIALIZADOS – IPI</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 24 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel3"><span class="ico">📌</span><span>RECEITA BRUTA DE VENDAS</span></li><li class="nivel5"><span class="ico">•</span><span>RECEITA DE VENDAS</span></li><li class="nivel5"><span class="ico">•</span><span>RECEITA DE SERVIÇOS</span></li><li class="nivel2"><span class="ico">🟣</span><span>DEDUÇÕES DA RECEITA BRUTA</span></li><li class="nivel3"><span class="ico">📌</span><span>TRIBUTOS SOBRE VENDAS E SERVIÇOS</span></li><li class="nivel5"><span class="ico">•</span><span>PIS SOBRE FATURAMENTO</span></li><li class="nivel5"><span class="ico">•</span><span>COFINS SOBRE FATURAMENTO</span></li><li class="nivel5"><span class="ico">•</span><span>ICMS SOBRE VENDAS</span></li><li class="nivel5"><span class="ico">•</span><span>IMPOSTO SOBRE SERVIÇOS</span></li><li class="nivel3"><span class="ico">📌</span><span>OUTROS AJUSTES DA RECEITA BRUTA</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 25 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>ABATIMENTOS SOBRE VENDAS</span></li><li class="nivel5"><span class="ico">•</span><span>DESCONTOS INCONDICIONAIS</span></li><li class="nivel5"><span class="ico">•</span><span>VENDAS CANCELADAS</span></li><li class="nivel5"><span class="ico">•</span><span>DEVOLUÇÕES PROVÁVEIS</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÃO PARA GARANTIA</span></li><li class="nivel5"><span class="ico">•</span><span>GARANTIAS PÓS-ENTREGA</span></li><li class="nivel3"><span class="ico">📌</span><span>AJUSTE A VALOR PRESENTE</span></li><li class="nivel5"><span class="ico">•</span><span>AJUSTE A VALOR PRESENTE</span></li><li class="nivel2"><span class="ico">🟣</span><span>CUSTOS</span></li><li class="nivel5"><span class="ico">•</span><span>CUSTO DAS MERCADORIAS VENDIDAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 26 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>CUSTO DOS SERVIÇOS PRESTADOS</span></li><li class="nivel5"><span class="ico">•</span><span>CUSTO DOS PRODUTOS VENDIDOS</span></li><li class="nivel5"><span class="ico">•</span><span>CUSTO DAS DEVOLUÇÕES PROVÁVEIS</span></li><li class="nivel2"><span class="ico">🟣</span><span>DESPESAS OPERACIONAIS</span></li><li class="nivel3"><span class="ico">📌</span><span>DESPESAS COMERCIAIS</span></li><li class="nivel4"><span class="ico">•</span><span>DESPESAS COM PESSOAL</span></li><li class="nivel5"><span class="ico">•</span><span>SALÁRIOS E ORDENADOS</span></li><li class="nivel5"><span class="ico">•</span><span>HORAS EXTRAS</span></li><li class="nivel5"><span class="ico">•</span><span>INDENIZAÇÃO E AVISO PRÉVIO</span></li><li class="nivel5"><span class="ico">•</span><span>FÉRIAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 27 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>13os SALÁRIOS</span></li><li class="nivel5"><span class="ico">•</span><span>INSS</span></li><li class="nivel5"><span class="ico">•</span><span>FGTS</span></li><li class="nivel5"><span class="ico">•</span><span>ASSISTÊNCIA MÉDICA E ODONTOLÓGICA</span></li><li class="nivel5"><span class="ico">•</span><span>TREINAMENTOS E CURSOS</span></li><li class="nivel5"><span class="ico">•</span><span>VALE-TRANSPORTE</span></li><li class="nivel5"><span class="ico">•</span><span>PRÓ-LABORE</span></li><li class="nivel5"><span class="ico">•</span><span>COMISSÕES S/ VENDAS</span></li><li class="nivel4"><span class="ico">•</span><span>OUTRAS DESPESAS COMERCIAIS</span></li><li class="nivel5"><span class="ico">•</span><span>MATERIAL DE MOSTRUÁRIO</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 28 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>MATERIAL DE EMBALAGEM</span></li><li class="nivel5"><span class="ico">•</span><span>PROPAGANDA E PUBLICIDADE</span></li><li class="nivel5"><span class="ico">•</span><span>BRINDES E BONIFICAÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>VIAGENS E ESTADIAS</span></li><li class="nivel5"><span class="ico">•</span><span>MATERIAL DE EXPEDIENTE</span></li><li class="nivel5"><span class="ico">•</span><span>PERDAS ESTIMADAS COM CONTAS A RECEBER</span></li><li class="nivel3"><span class="ico">📌</span><span>DESPESAS ADMINISTRATIVAS</span></li><li class="nivel4"><span class="ico">•</span><span>DESPESAS COM PESSOAL</span></li><li class="nivel5"><span class="ico">•</span><span>SALÁRIOS E ORDENADOS</span></li><li class="nivel5"><span class="ico">•</span><span>HORAS EXTRAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 29 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>INDENIZAÇÃO E AVISO PRÉVIO</span></li><li class="nivel5"><span class="ico">•</span><span>FÉRIAS</span></li><li class="nivel5"><span class="ico">•</span><span>13os SALÁRIOS</span></li><li class="nivel5"><span class="ico">•</span><span>INSS</span></li><li class="nivel5"><span class="ico">•</span><span>FGTS</span></li><li class="nivel5"><span class="ico">•</span><span>ASSISTÊNCIA MÉDICA E ODONTOLÓGICA</span></li><li class="nivel5"><span class="ico">•</span><span>TREINAMENTOS E CURSOS</span></li><li class="nivel5"><span class="ico">•</span><span>VALE-TRANSPORTE</span></li><li class="nivel5"><span class="ico">•</span><span>PRÓ-LABORE</span></li><li class="nivel4"><span class="ico">•</span><span>OCUPAÇÃO</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 30 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>ALUGUEL DE MÓVEIS E IMÓVEIS/CONDOMÍNIO</span></li><li class="nivel5"><span class="ico">•</span><span>MANUTENÇÃO DE MÓVEIS, MÁQ. E EQUIPAMENTOS</span></li><li class="nivel5"><span class="ico">•</span><span>MANUTENÇÃO PREDIAL</span></li><li class="nivel5"><span class="ico">•</span><span>DEPRECIAÇÃO E AMORTIZAÇÃO</span></li><li class="nivel4"><span class="ico">•</span><span>UTILIDADES E SERVIÇOS</span></li><li class="nivel5"><span class="ico">•</span><span>BENS DE PEQUENO VALOR</span></li><li class="nivel5"><span class="ico">•</span><span>SEGUROS</span></li><li class="nivel5"><span class="ico">•</span><span>ENERGIA ELÉTRICA</span></li><li class="nivel5"><span class="ico">•</span><span>CORREIOS E MALOTES</span></li><li class="nivel5"><span class="ico">•</span><span>ÁGUA E ESGOTO</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 31 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>TELEFONIA E INTERNET</span></li><li class="nivel5"><span class="ico">•</span><span>MANUTENÇÃO</span></li><li class="nivel5"><span class="ico">•</span><span>SERVIÇOS E PEÇAS DE MANUTENÇÃO DE INFORMÁTICA</span></li><li class="nivel5"><span class="ico">•</span><span>VIGILÂNCIA/PORTARIA</span></li><li class="nivel5"><span class="ico">•</span><span>FRETES E CARRETOS</span></li><li class="nivel5"><span class="ico">•</span><span>COMBUSTÍVEIS E LUBRIFICANTES</span></li><li class="nivel5"><span class="ico">•</span><span>LICENCIAMENTO E TAXAS DE VEÍCULOS</span></li><li class="nivel5"><span class="ico">•</span><span>ASSINATURAS E ANUIDADES</span></li><li class="nivel5"><span class="ico">•</span><span>SERVIÇOS CONTRATADOS PJ</span></li><li class="nivel5"><span class="ico">•</span><span>SERVIÇOS CONTRATADOS PF</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 32 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>LICENÇA/ALUGUEL DE SOFTWARE</span></li><li class="nivel5"><span class="ico">•</span><span>CUSTAS PROCESSUAIS E DESPESAS CARTORIAIS</span></li><li class="nivel4"><span class="ico">•</span><span>DESPESAS ADMINISTRATIVAS GERAIS</span></li><li class="nivel5"><span class="ico">•</span><span>LANCHES, REFEIÇÕES E CONDUÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>VIAGENS E ESTADIAS</span></li><li class="nivel5"><span class="ico">•</span><span>MATERIAL DE EXPEDIENTE</span></li><li class="nivel3"><span class="ico">📌</span><span>DESPESAS TRIBUTÁRIAS</span></li><li class="nivel4"><span class="ico">•</span><span>IMPOSTOS E CONTRIBUIÇÕES</span></li><li class="nivel5"><span class="ico">•</span><span>IPTU</span></li><li class="nivel5"><span class="ico">•</span><span>PIS S/ OUTRAS RECEITAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 33 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>COFINS S/ OUTRAS RECEITAS</span></li><li class="nivel5"><span class="ico">•</span><span>IOF</span></li><li class="nivel5"><span class="ico">•</span><span>TAXAS</span></li><li class="nivel5"><span class="ico">•</span><span>MULTAS DEDUTÍVEIS</span></li><li class="nivel5"><span class="ico">•</span><span>MULTAS INDEDUTÍVEIS</span></li><li class="nivel5"><span class="ico">•</span><span>OUTROS TRIBUTOS</span></li><li class="nivel3"><span class="ico">📌</span><span>DESPESAS COM PROVISÕES</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES FISCAIS, PREVIDENCIÁRIAS, TRABALHISTAS E CÍVEIS</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA BENEFÍCIOS A EMPREGADOS (APOSENTADORIAS E PENSÕES)</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA GARANTIAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 34 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA REESTRUTURAÇÃO</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA RETIRADA DE ATIVOS</span></li><li class="nivel5"><span class="ico">•</span><span>PROGRAMAS DE FIDELIDADE</span></li><li class="nivel5"><span class="ico">•</span><span>PROVISÕES PARA CONTRATOS ONEROSOS</span></li><li class="nivel4"><span class="ico">•</span><span>RESULTADO NA VENDA DE ITENS NÃO CIRCULANTES</span></li><li class="nivel5"><span class="ico">•</span><span>RECEITA COM VENDAS DE ITENS NÃO CIRCULANTES</span></li><li class="nivel5"><span class="ico">•</span><span>CUSTO COM VENDAS DE ITENS NÃO CIRCULANTES</span></li><li class="nivel3"><span class="ico">📌</span><span>OUTRAS RECEITAS E DESPESAS</span></li><li class="nivel5"><span class="ico">•</span><span>PERDAS POR NÃO RECUPERABILIDADE</span></li><li class="nivel5"><span class="ico">•</span><span>RESULTADO DA EQUIVALÊNCIA PATRIMONIAL</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 35 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>RECEITA COM DIVIDENDOS</span></li><li class="nivel2"><span class="ico">🟣</span><span>RESULTADO FINANCEIRO LÍQUIDO</span></li><li class="nivel3"><span class="ico">📌</span><span>DESPESAS FINANCEIRAS</span></li><li class="nivel5"><span class="ico">•</span><span>VARIAÇÃO CAMBIAL – DESPESA</span></li><li class="nivel5"><span class="ico">•</span><span>VARIAÇÃO MONETÁRIA EMPRÉSTIMOS</span></li><li class="nivel5"><span class="ico">•</span><span>VARIAÇÃO MONETÁRIA SOBRE PARCELAMENTO DE TRIBUTOS</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS – AJUSTE A VALOR PRESENTE</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS SELIC</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS DE MORA – DESPESAS FINANCEIRAS</span></li><li class="nivel5"><span class="ico">•</span><span>MULTAS FINANCEIRAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 36 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>JUROS SOBRE EMPRÉSTIMOS BANCÁRIOS</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS SOBRE DUPLICATAS A PAGAR</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS SOBRE PARCELAMENTOS DE TRIBUTOS</span></li><li class="nivel3"><span class="ico">📌</span><span>DESPESAS FINANCEIRAS GERAIS</span></li><li class="nivel5"><span class="ico">•</span><span>DESPESAS BANCÁRIAS</span></li><li class="nivel5"><span class="ico">•</span><span>TAXA DE ADMINISTRAÇÃO DE CARTÃO</span></li><li class="nivel5"><span class="ico">•</span><span>ENCARGOS FINANCEIROS CARTÃO DE CRÉDITO</span></li><li class="nivel5"><span class="ico">•</span><span>DESCONTO CONCEDIDO A CLIENTES</span></li><li class="nivel5"><span class="ico">•</span><span>DESPESA COM OPERAÇÃO DE DESCONTOS</span></li><li class="nivel3"><span class="ico">📌</span><span>RECEITAS FINANCEIRAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 37 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>VARIAÇÃO CAMBIAL – RECEITA</span></li><li class="nivel5"><span class="ico">•</span><span>VARIAÇÃO MONETÁRIA SOBRE EMPRÉSTIMOS – RECEITA</span></li><li class="nivel5"><span class="ico">•</span><span>RECEITA DE JUROS – AJUSTE A VALOR PRESENTE</span></li><li class="nivel3"><span class="ico">📌</span><span>JUROS/MULTA RECEBIDOS</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS SOBRE OPERAÇÕES DE MÚTUO</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS DE MORA – RECEITAS FINANCEIRAS</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS SELIC</span></li><li class="nivel5"><span class="ico">•</span><span>JUROS RECEBIDOS DE CLIENTES</span></li><li class="nivel5"><span class="ico">•</span><span>MULTAS FINANCEIRAS</span></li><li class="nivel3"><span class="ico">📌</span><span>RECEITAS FINANCEIRAS GERAIS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 38 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>RECEITA DE APLICAÇÃO FINANCEIRA</span></li><li class="nivel5"><span class="ico">•</span><span>DESCONTOS FINANCEIROS OBTIDOS</span></li><li class="nivel2"><span class="ico">🟣</span><span>DESPESA COM TRIBUTOS SOBRE O LUCRO</span></li><li class="nivel5"><span class="ico">•</span><span>IRPJ CORRENTE</span></li><li class="nivel5"><span class="ico">•</span><span>IRPJ DIFERIDO</span></li><li class="nivel5"><span class="ico">•</span><span>CSLL CORRENTE</span></li><li class="nivel5"><span class="ico">•</span><span>CSLL DIFERIDA</span></li><li class="nivel2"><span class="ico">🟣</span><span>RESULTADO DAS OPERAÇÕES NÃO CONTINUADAS</span></li><li class="nivel5"><span class="ico">•</span><span>RECEITAS DAS OPERAÇOES DESCONTINUADAS</span></li><li class="nivel5"><span class="ico">•</span><span>DESPESAS DAS OPERAÇOES DESCONTINUADAS</span></li>
-        </ul>
-      </section>
-    
-      <section class="slide">
-        <div class="topo">
-          <div class="badge">TELA 39 DE 39</div>
-          <h2>📚 Contas Contábeis</h2>
-        </div>
-        <ul class="contas">
-          <li class="nivel5"><span class="ico">•</span><span>TRIBUTOS SOBRE OPERAÇÕES DESCONTINUADAS</span></li><li class="nivel5"><span class="ico">•</span><span>IMPOSTO DE RENDA E CONTRIBUIÇÃO SOCIAL S/ O LUCRO DE OPERAÇÕES DESCONTINUADAS</span></li>
-        </ul>
-      </section>
-    
-  </main>
+<div class="screen active">
+<h1>📘 LISTAGEM ESTRUTURADA DE CONTAS</h1>
+<h2>FGV - BACHAREL EM CIÊNCIAS CONTÁBEIS</h2>
 
-  <nav class="nav">
-    <button onclick="voltar()">⬅️ Voltar</button>
-    <button onclick="recomecar()">🔁 Início</button>
-    <button onclick="avancar()">Avançar ➡️</button>
-  </nav>
+<div class="card">
+<h3>🟢 ATIVO CIRCULANTE</h3>
+<ul>
+<li>Caixa</li>
+<li>Bancos Conta Movimento</li>
+<li>Clientes</li>
+<li>Estoques</li>
+<li>Aplicações Financeiras</li>
+<li>Adiantamentos</li>
+<li>Despesas Antecipadas</li>
+</ul>
+</div>
 
-  <footer class="footer">
-    Curso de Contabilidade Professor Moreira • WhatsApp (61) 98532-3574
-  </footer>
+<div class="buttons">
+<button onclick="nextScreen()">➡ IR</button>
+</div>
+</div>
+
+<div class="screen">
+<div class="card">
+<h3>🔵 ATIVO NÃO CIRCULANTE</h3>
+<ul>
+<li>Realizável a Longo Prazo</li>
+<li>Investimentos</li>
+<li>Imobilizado</li>
+<li>Intangível</li>
+<li>Depreciação Acumulada</li>
+<li>Amortização Acumulada</li>
+</ul>
+</div>
+
+<div class="buttons">
+<button onclick="prevScreen()">⬅ VOLTAR</button>
+<button onclick="nextScreen()">➡ IR</button>
+</div>
+</div>
+
+<div class="screen">
+<div class="card">
+<h3>🔴 PASSIVO CIRCULANTE</h3>
+<ul>
+<li>Fornecedores</li>
+<li>Salários a Pagar</li>
+<li>INSS a Recolher</li>
+<li>FGTS a Recolher</li>
+<li>Impostos a Recolher</li>
+<li>Empréstimos CP</li>
+<li>Dividendos a Pagar</li>
+</ul>
+</div>
+
+<div class="buttons">
+<button onclick="prevScreen()">⬅ VOLTAR</button>
+<button onclick="nextScreen()">➡ IR</button>
+</div>
+</div>
+
+<div class="screen">
+<div class="card">
+<h3>🟣 PASSIVO NÃO CIRCULANTE</h3>
+<ul>
+<li>Financiamentos LP</li>
+<li>Debêntures LP</li>
+<li>Tributos Diferidos</li>
+<li>Provisões LP</li>
+</ul>
+</div>
+
+<div class="buttons">
+<button onclick="prevScreen()">⬅ VOLTAR</button>
+<button onclick="nextScreen()">➡ IR</button>
+</div>
+</div>
+
+<div class="screen">
+<div class="card">
+<h3>🟡 PATRIMÔNIO LÍQUIDO</h3>
+<ul>
+<li>Capital Social</li>
+<li>Reservas de Capital</li>
+<li>Reservas de Lucro</li>
+<li>Lucros Acumulados</li>
+<li>Prejuízos Acumulados</li>
+<li>Ações em Tesouraria</li>
+</ul>
+</div>
+
+<div class="buttons">
+<button onclick="prevScreen()">⬅ VOLTAR</button>
+<button onclick="restartScreens()">🔄 REINICIAR</button>
+</div>
+</div>
+
+</div>
+
+<footer>
+Curso de Contabilidade Professor Moreira • WhatsApp (61) 98532-3574
+</footer>
 
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const contador = document.getElementById('contador');
-  let atual = 0;
+let current = 0;
+const screens = document.querySelectorAll('.screen');
 
-  function mostrar(i) {
-    slides[atual].classList.remove('ativa');
-    atual = (i + slides.length) % slides.length;
-    slides[atual].classList.add('ativa');
-    contador.textContent = (atual + 1) + '/' + slides.length;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+function showScreen(index){
+    screens.forEach((screen,i)=>{
+        screen.classList.toggle('active', i===index);
+    });
+}
 
-  function avancar() { mostrar(atual + 1); }
-  function voltar() { mostrar(atual - 1); }
-  function recomecar() { mostrar(0); }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowRight') avancar();
-    if (e.key === 'ArrowLeft') voltar();
-    if (e.key === 'Home') recomecar();
-  });
-
-  let startX = null;
-  document.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-  }, {passive:true});
-  document.addEventListener('touchend', e => {
-    if (startX === null) return;
-    const endX = e.changedTouches[0].clientX;
-    const diff = startX - endX;
-    if (Math.abs(diff) > 60) {
-      diff > 0 ? avancar() : voltar();
+function nextScreen(){
+    if(current < screens.length -1){
+        current++;
+        showScreen(current);
     }
-    startX = null;
-  }, {passive:true});
+}
+
+function prevScreen(){
+    if(current >0){
+        current--;
+        showScreen(current);
+    }
+}
+
+function restartScreens(){
+    current = 0;
+    showScreen(current);
+}
 </script>
+
 </body>
 </html>
